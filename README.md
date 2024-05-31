@@ -1,1 +1,3 @@
 # Bitburner
+
+Scripts for Bitburner.
