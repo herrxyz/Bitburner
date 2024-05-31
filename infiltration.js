@@ -658,7 +658,8 @@ function waitForStart() {
   state.started = true;
   wrapEventListeners();
 
-  console.log("Start automatic infiltration of", state.company);
+var datetime = new Date().today() + " @ " + new Date().timeNow();
+  console.log(datetime, " Start automatic infiltration of", state.company);
   btnStart.click();
 }
 
@@ -923,7 +924,7 @@ function acceptMoney(msg) {
   if (!auto) return
   if (postTimeout) return
 
-  console.log('acceptMoney:', msg)
+  //console.log('acceptMoney:', msg)
   cancelMyTimeout()
 
   if (repFaction && repFaction.length) {
@@ -933,7 +934,7 @@ function acceptMoney(msg) {
   }
 
   postTimeout = setTimeout(() => {
-    console.log('acceptMoney()', msg)
+    //console.log('acceptMoney()', msg)
     cancelMyTimeout()
     var btn = Array.from(doc.querySelectorAll('button')).find(x => x.innerText.indexOf('Sell for') >= 0)
     if (btn) {
@@ -958,9 +959,14 @@ function acceptReputation() {
     postTimeout = null
 
     // var e = Array.from(doc.querySelectorAll('[role="button"]')).find(x => x.innerText.indexOf('None') >= 0);
+    var e = Array.from(doc.querySelectorAll('[role="combobox"]')).find(x => x.innerText.indexOf('none') >= 0);
+	if (typeof(e) == 'undefined')
+	{
     var e = Array.from(doc.querySelectorAll('[role="combobox"]')).find(x => x.innerText.indexOf(repFaction) >= 0);
-	// console.log("function acceptReputation: e ",e);
-	// console.log("function acceptReputation: repFaction ", repFaction);
+	}
+	var datetime = new Date().today() + " @ " + new Date().timeNow();
+	// console.log(datetime, " function acceptReputation: e ",e);
+	// console.log(datetime, " function acceptReputation: repFaction ", repFaction);
     if (e) {
       e[Object.keys(e)[1]].onKeyDown(new KeyboardEvent('keydown', { 'key': ' ' }));
       postTimeout = setTimeout(() => {
@@ -973,7 +979,7 @@ function acceptReputation() {
           if (btn) {
             btn[Object.keys(btn)[1]].onClick({ isTrusted: true })
             if (infiltrationStart) {
-              console.info(`SUCCESSFUL INFILTRATION - ${((new Date().valueOf() - infiltrationStart) / 1000).toFixed(1)} sec - ${btn.innerText}`);
+              console.info(`SUCCESSFUL INFILTRATION - ${((new Date().valueOf() - infiltrationStart) / 1000).toFixed(1)} sec - ${btn.innerText}`, repFaction);
               infiltrationStart = 0
             }
           }
@@ -981,6 +987,17 @@ function acceptReputation() {
       }, 500)
     }
   }, 1000)
+}
+
+
+// For todays date;
+Date.prototype.today = function () { 
+    return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+}
+
+// For the time now
+Date.prototype.timeNow = function () {
+     return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
 }
 
 function cancelMyTimeout() {
