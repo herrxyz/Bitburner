@@ -1,6 +1,9 @@
 //file based on source from https://pastebin.com/bLuWWQzT , updated for Bitburner v2.6.1
-// fixes: "say something nice to the guard", "attack guard", auto select reputation for faction
-// not working: "enter the code"
+// fixes: "say something nice to the guard", "attack guard", "enter the code", auto select reputation for faction
+// work in progress: auto heal in hospital
+
+
+//important parameters: "--auto" for auto replay, "--faction BitRunners" for auto-accepting reputation for named faction
 
 const state = {
   // Name of the company that's infiltrated.
@@ -60,9 +63,13 @@ const infiltrationGames = [
     init: function (screen) { },
     play: function (screen) {
       const h4 = getEl(screen, "h4");
+	  // console.log("enter the code: h4 ", h4);
+	  // console.log("enter the code: h4[1] ", h4[1]);
       const code = h4[1].textContent;
-
-      switch (code) {
+	  const code2 = code.replaceAll("?","").slice(-1);
+		
+	
+      switch (code2) {
         case "↑":
           pressKey("w");
           break;
@@ -665,6 +672,7 @@ function playGame() {
   if (!screens.length) {
     wnd.info = { screens, messge: 'no screens.length, calling endInfiltration()' }
     endInfiltration();
+	refillhealth();
     selectCompany();
     return;
   }
@@ -880,6 +888,37 @@ function selectCompany() {
   }, 1000)
 }
 
+function refillhealth() {
+	
+  if (!auto) return
+  cancelMyTimeout()
+    console.log("going to hospital");
+
+  postTimeout = setTimeout(() => {
+    postTimeout = null
+	console.log("function hospital: selecting hospital on map")
+    var selector = 'span[aria-label="Hospital"]'
+    var HospitalEle = doc.querySelector(selector)
+	console.log("function hospital: HospitalEle ", HospitalEle)
+	
+    if (HospitalEle) {
+      if (infiltrationStart) {
+        console.info(`FAILED INFILTRATION - ${((new Date().valueOf() - infiltrationStart) / 1000).toFixed(1)} sec, last was ${last_title}`);
+        infiltrationStart = 0
+      }
+      companyEle.click()
+      postTimeout = setTimeout(() => {
+        postTimeout = null
+        var btn = Array.from(doc.querySelectorAll('button')).find(x => x.innerText.indexOf('Get treatment') >= 0)
+        if (btn) btn[Object.keys(btn)[1]].onClick({ isTrusted: true })
+      }, 1000)
+    }
+  }, 1000)	
+}	
+
+  
+
+
 // accept money bonus, hand off to acceptReputation() if repFaction is set
 function acceptMoney(msg) {
   if (!auto) return
@@ -907,7 +946,8 @@ function acceptMoney(msg) {
     } else {
       console.log(`Failure!  ${ms}`)
     }
-    selectCompany()
+	refillhealth();
+    selectCompany();
   }, 500)
 }
 
@@ -920,17 +960,17 @@ function acceptReputation() {
 
     // var e = Array.from(doc.querySelectorAll('[role="button"]')).find(x => x.innerText.indexOf('None') >= 0);
     var e = Array.from(doc.querySelectorAll('[role="combobox"]')).find(x => x.innerText.indexOf(repFaction) >= 0);
-	console.log("e ",e);
-	console.log("repFaction ", repFaction);
+	// console.log("function acceptReputation: e ",e);
+	// console.log("function acceptReputation: repFaction ", repFaction);
     if (e) {
       e[Object.keys(e)[1]].onKeyDown(new KeyboardEvent('keydown', { 'key': ' ' }));
       postTimeout = setTimeout(() => {
         var e2 = Array.from(doc.querySelectorAll('li[role="option"]')).find(x => x.innerText.indexOf(repFaction) >= 0)
-		console.log("e2 ", e2);
+		// console.log("function acceptReputation: e2 ", e2);
         e2.click()
         postTimeout = setTimeout(() => {
           var btn = Array.from(doc.querySelectorAll('button')).find(x => x.innerText.indexOf('Trade for') >= 0)
-		  console.log("btn ",btn);
+		  // console.log("function acceptReputation: btn ",btn);
           if (btn) {
             btn[Object.keys(btn)[1]].onClick({ isTrusted: true })
             if (infiltrationStart) {
