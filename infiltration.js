@@ -672,7 +672,7 @@ function playGame() {
   if (!screens.length) {
     wnd.info = { screens, messge: 'no screens.length, calling endInfiltration()' }
     endInfiltration();
-	refillhealth();
+	//refillhealth();
     selectCompany();
     return;
   }
@@ -903,10 +903,9 @@ function refillhealth() {
 	
     if (HospitalEle) {
       if (infiltrationStart) {
-        console.info(`FAILED INFILTRATION - ${((new Date().valueOf() - infiltrationStart) / 1000).toFixed(1)} sec, last was ${last_title}`);
         infiltrationStart = 0
       }
-      companyEle.click()
+      HospitalEle.click()
       postTimeout = setTimeout(() => {
         postTimeout = null
         var btn = Array.from(doc.querySelectorAll('button')).find(x => x.innerText.indexOf('Get treatment') >= 0)
@@ -946,7 +945,7 @@ function acceptMoney(msg) {
     } else {
       console.log(`Failure!  ${ms}`)
     }
-	refillhealth();
+	//refillhealth();
     selectCompany();
   }, 500)
 }
