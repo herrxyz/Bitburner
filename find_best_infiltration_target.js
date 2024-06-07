@@ -19,16 +19,23 @@ for (const items of CorpsNameList){
 for (const item of CorpsNameArray){
     //console.log(item);
     const a = ns.infiltration.getInfiltration(item)
+    console.log(a)
     let tradeRep = Math.floor(a["reward"]["tradeRep"])
     let sellCash = Math.floor(a["reward"]["sellCash"])
     var locationname = a["location"]["name"]
     //console.log("locationname ", locationname)
     CorpsCashArray.push({
-    key:   locationname,
-    value: sellCash    })
+    "name":   locationname,
+    value: sellCash,
+    value_Cash_human:sellCash.toExponential(),
+    "city" : a["location"]["city"]
+    })
     CorpsRepArray.push({
-    key:   locationname,
-    value: tradeRep    })
+    "name":   locationname,
+    value: tradeRep,
+    value_Rep_human:tradeRep.toExponential(),
+    "city" : a["location"]["city"]
+    })
 
 }
 
