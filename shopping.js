@@ -1,5 +1,5 @@
+// source https://pastebin.com/8g83kTxM
 // buy programs before SF4
-//https://pastebin.com/8g83kTxM
 export async function main(ns) {
     let output
     const exeList = ["AutoLink.exe", "BruteSSH.exe",  "FTPCrack.exe", "HTTPWorm.exe", "NUKE.exe", "SQLInject.exe", "relaySMTP.exe", "DeepscanV2.exe", "DeepscanV1.exe", "ServerProfiler.exe", "Formulas.exe"]
