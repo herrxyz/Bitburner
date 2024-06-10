@@ -14,5 +14,7 @@ I'm using scripts from https://github.com/alainbryden/bitburner-scripts , but ad
 | infiltration.js | solves (mostly) all minigames for infiltration and can automatically select reward and do it again | no |
 | shopping.js |	after manually buying TOR Browser, this script allows to buy Programs even before SF4 | no |
 | work_for_factions.js | pdated version of work for faction, still a little buggy because it does focus on jobs which it should'nt | no |
+| deployer.js | alternative deployer script, needs earlier-hacking2.js to work | no |
+| earlier-hacking2.js | script for hacking, run by deployer.js | no |
 
 sources listed in scripts when remembered
