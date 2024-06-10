@@ -1,4 +1,5 @@
 /** @param {NS} ns */
+// author herrxyz
 export async function main(ns) {
 
 // // ns.singularity.getAugmentationPrereq(augName) 	Get the pre-requisite of an augmentation.
