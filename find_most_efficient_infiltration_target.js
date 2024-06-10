@@ -1,3 +1,4 @@
+// author herrxyz
 // show best target for cash and for reputation, ignoring difficulty and number of minigames
 /** @param {NS} ns */
 export async function main(ns) {
