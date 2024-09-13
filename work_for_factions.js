@@ -1,3 +1,4 @@
+//source https://github.com/alainbryden/bitburner-scripts/blob/main/work-for-factions.js
 import {
     instanceCount, getConfiguration, getNsDataThroughFile, getFilePath, getActiveSourceFiles, tryGetBitNodeMultipliers,
     formatDuration, formatMoney, formatNumberShort, disableLogs, log
